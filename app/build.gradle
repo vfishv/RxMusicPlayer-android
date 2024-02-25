@@ -1,10 +1,20 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+//apply plugin: 'kotlin-android-extensions'
 apply plugin: "kotlin-kapt"
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk rootProject.compileSdkVersion
+    namespace "com.app.music.player"
+
+    buildFeatures {
+        buildConfig = true
+        aidl = false
+        viewBinding = true
+        dataBinding = false
+        //buildFeatures.compose = true
+    }
+
     defaultConfig {
         applicationId "com.app.music.player"
         minSdkVersion rootProject.minSdkVersion
@@ -19,12 +29,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-    androidExtensions {
-        experimental = true
-    }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 }
 

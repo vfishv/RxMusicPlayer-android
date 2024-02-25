@@ -1,29 +1,35 @@
 package com.app.music.player
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.music.player.databinding.ActivityMainBinding
 import com.orfium.rx.musicplayer.RxMusicPlayer
 import com.orfium.rx.musicplayer.common.PlaybackState
 import com.orfium.rx.musicplayer.media.Media
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private val compositeDisposable = CompositeDisposable()
 
+    lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        RxMusicPlayer.start(this)
+        //RxMusicPlayer.start(this)
+        RxMusicPlayer.start(this, Intent(this, MainActivity::class.java))
+
 
         val adapter = PopularAdapter(generateMedia())
-        popularRecyclerView.layoutManager = LinearLayoutManager(this)
-        popularRecyclerView.adapter = adapter
+        binding.popularRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.popularRecyclerView.adapter = adapter
 
         compositeDisposable.add(
             RxMusicPlayer.state
@@ -31,24 +37,26 @@ class MainActivity : AppCompatActivity() {
                 .subscribe { state ->
                     when (state) {
                         is PlaybackState.Buffering -> {
-                            Log.d("PlaybackState Buffering", state.media?.toString())
+                            Log.d("PlaybackState Buffering", "" + state.media?.toString())
                             adapter.notifyDataSetChanged()
                         }
                         is PlaybackState.Playing -> {
-                            Log.d("PlaybackState Playing", state.media?.toString())
+                            Log.d("PlaybackState Playing", "" + state.media?.toString())
                             adapter.notifyDataSetChanged()
                         }
                         is PlaybackState.Paused -> {
-                            Log.d("PlaybackState Paused", state.media?.toString())
+                            Log.d("PlaybackState Paused", "" + state.media?.toString())
                             adapter.notifyDataSetChanged()
                         }
                         is PlaybackState.Completed -> {
-                            Log.d("PlaybackState Completed", state.media?.toString())
+                            Log.d("PlaybackState Completed", "" + state.media?.toString())
                             adapter.notifyDataSetChanged()
                         }
                         is PlaybackState.Stopped -> {
                             // At this state MediaService gets destroyed, so RxMusicPlayer.start needs to be called again
                         }
+
+                        else -> {}
                     }
                 }
         )

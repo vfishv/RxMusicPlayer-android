@@ -24,10 +24,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_media_play"
-        app:layout_constraintBottom_toTopOf="@id/coverImage"
-        app:layout_constraintLeft_toRightOf="@id/coverImage"
-        app:layout_constraintRight_toLeftOf="@id/coverImage"
-        app:layout_constraintTop_toBottomOf="@id/coverImage" />
+        app:layout_constraintBottom_toBottomOf="@+id/coverImage"
+        app:layout_constraintEnd_toEndOf="@+id/coverImage"
+        app:layout_constraintStart_toStartOf="@+id/coverImage"
+        app:layout_constraintTop_toTopOf="@+id/coverImage" />
 
     <TextView
         android:id="@+id/titleText"
